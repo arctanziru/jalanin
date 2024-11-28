@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "405159074616",
+    "project_id": "jalanin-6004f",
+    "storage_bucket": "jalanin-6004f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405159074616:android:90c6903e7607fffc8fffcd",
+        "android_client_info": {
+          "package_name": "com.example.jalanin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATaghxXKsKNpR_A35w2ywF17Eac2OHoP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
