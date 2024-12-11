@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">jalanin</string>
+    <string name="app_name">Goals Getter</string>
+    <string name="login">Login</string>
+    <string name="loginWithGoogle">Login with Google</string>
+
+    <string name="signup">Signup</string>
+    <string name="fullName">Full Name</string>
+    <string name="confirmPassword">Confirm Password</string>
+
+    <string name="didntHaveAccount">Didn\'t have an account?</string>
+    <string name="alreadyHaveAccount">Already have an account?</string>
+    <string name="forgotPassword">Forgot Password</string>
+    <string name="or">Or</string>
+
+    <string name="noActiveRoutine">No selected routine.</string>
+    <string name="noRoutines">No routines at the moment.</string>
+    <string name="whatsYourGoal">What\'s your goal today?</string>
+    <string name="routineList">List of routinity</string>
+    <string name="todayRoutine">Today\'s routine</string>
+    <string name="titleIsRequired">Title is required</string>
+    <string name="routineCreated">Routine created successfully</string>
+    <string name="routineUpdated">Routine successfully updated</string>
 </resources>

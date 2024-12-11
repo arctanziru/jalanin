@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Goals Getter</string>
+    <string name="login">Masuk</string>
+    <string name="loginWithGoogle">Masuk dengan Google</string>
+    <string name="signup">Daftar</string>
+    <string name="fullName">Nama Lengkap</string>
+    <string name="confirmPassword">Konfirmasi Password</string>
+    <string name="didntHaveAccount">Tidak memiliki akun?</string>
+    <string name="alreadyHaveAccount">Sudah Memiliki Akun?</string>
+    <string name="forgotPassword">Lupa Password</string>
+    <string name="or">Atau</string>
+    <string name="noActiveRoutine">Tidak ada rutinitas yang dipilih.</string>
+    <string name="noRoutines">Belum ada rutinitas nih.</string>
+    <string name="whatsYourGoal">Apa target kamu hari ini?</string>
+    <string name="routineList">Daftar rutinitas</string>
+    <string name="todayRoutine">Rutinitas hari ini</string>
+    <string name="titleIsRequired">Judul tidak boleh kosong</string>
+    <string name="routineCreated">Rutinitas berhasil dibuat</string>
+    <string name="routineUpdated">Rutinitas berhasil diperbarui</string>
+</resources>

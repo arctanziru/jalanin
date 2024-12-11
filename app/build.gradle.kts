@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.jalanin"
+    namespace = "com.example.goalsgetter"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.jalanin"
+        applicationId = "com.example.goalsgetter"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
