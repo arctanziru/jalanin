@@ -58,17 +58,19 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
             // About App Option
             CustomCard {
                 ListItem(
-                    headlineContent = { Text("Tentang Aplikasi") },
+                    headlineContent = { Text("Log Out") },
                     trailingContent = {
                         Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
                     },
                     modifier = Modifier.clickable {
-                        navController.navigate("about_screen") // Navigate to about screen
+                        navController.navigate("login") {
+                            popUpTo("splash") { inclusive = true }
+                        }
+
                     }
                 )
             }
 
-            // Language Dialog
             if (showLanguageDialog.value) {
                 LanguageSelectionDialog(
                     onDismiss = { showLanguageDialog.value = false },
@@ -92,7 +94,7 @@ fun LanguageSelectionDialog(
         title = { Text("Pilih Bahasa") },
         text = {
             Column {
-                TextButton (
+                TextButton(
                     onClick = { onLanguageSelected("id") } // Indonesian locale
                 ) {
                     Text("Bahasa Indonesia")
