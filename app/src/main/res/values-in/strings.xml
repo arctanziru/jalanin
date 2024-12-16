@@ -18,4 +18,10 @@
     <string name="titleIsRequired">Judul tidak boleh kosong</string>
     <string name="routineCreated">Rutinitas berhasil dibuat</string>
     <string name="routineUpdated">Rutinitas berhasil diperbarui</string>
+    <string name="motivationQuotes">Kutipan Motivasi</string>
+    <string name="howYourDay">Bagaimana Harimu?</string>
+    <string name="appbarRoutine">Rutinitas</string>
+    <string name="appbarSetting">Pengaturan</string>
+    <string name="settingLanguage">Bahasa</string>
+    <string name="langChoose">Pilih Bahasa</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.goalsgetter.features.routine.presentation
 
+import CustomTextField
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -91,17 +92,19 @@ fun RoutineCreateEditScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            TextField(
+            CustomTextField(
                 value = state.title,
                 onValueChange = viewModel::updateTitle,
-                label = { Text("Nama Rencana") },
+                label = "Nama Rencana",
+                placeholder = "Masukkan nama rencana",
                 modifier = Modifier.fillMaxWidth()
             )
 
-            TextField(
+            CustomTextField(
                 value = state.description,
                 onValueChange = viewModel::updateDescription,
-                label = { Text("Deskripsi Rencana") },
+                label = "Deskripsi Rencana",
+                placeholder = "Masukkan deskripsi rencana",
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -116,22 +119,27 @@ fun RoutineCreateEditScreen(
                 }
             }
 
-            Row(
+            Column (
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                TextField(
+                CustomTextField(
                     value = newActivityTitle,
                     onValueChange = { newActivityTitle = it },
-                    label = { Text("Nama Aktivitas") },
-                    modifier = Modifier.weight(1f)
+                    label = "Nama Aktivitas",
+                    placeholder = "Masukkan nama aktivitas",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
                 )
-                TextField(
+
+                CustomTextField(
                     value = newActivityDescription,
                     onValueChange = { newActivityDescription = it },
-                    label = { Text("Deskripsi Aktivitas") },
-                    modifier = Modifier.weight(1f)
+                    label = "Deskripsi Aktivitas",
+                    placeholder = "Masukkan deskripsi aktivitas",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
                 )
                 Button(
                     onClick = {
