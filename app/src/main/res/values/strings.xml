@@ -20,4 +20,10 @@
     <string name="titleIsRequired">Title is required</string>
     <string name="routineCreated">Routine created successfully</string>
     <string name="routineUpdated">Routine successfully updated</string>
+    <string name="motivationQuotes">Motivation Quotes</string>
+    <string name="howYourDay">How is your day?</string>
+    <string name="appbarRoutine">Routine</string>
+    <string name="appbarSetting">Setting</string>
+    <string name="settingLanguage">Language</string>
+    <string name="langChoose">Select Language</string>
 </resources>

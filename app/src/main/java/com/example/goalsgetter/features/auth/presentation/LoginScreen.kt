@@ -1,13 +1,16 @@
 package com.example.goalsgetter.features.auth.presentation
 
+import CustomTextField
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -15,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.goalsgetter.ui.components.CustomButton
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -36,7 +40,7 @@ fun LoginScreen(
         if (loginState.isLoginSuccessful) {
             Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show()
             navController.navigate("dashboard") {
-                popUpTo("login") { inclusive = true } // Clears the back stack
+                popUpTo("login") { inclusive = true }
             }
         }
     }
@@ -47,21 +51,23 @@ fun LoginScreen(
         }
     }
 
+    // Remove extra padding from Column
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(60.dp))
+
+        // Logo
         Box(
             modifier = Modifier
                 .size(100.dp)
-                .padding(16.dp),
+                .padding(16.dp), // Add padding here instead
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background), // Replace with your logo resource
+                painter = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = "App Logo"
             )
         }
@@ -72,30 +78,33 @@ fun LoginScreen(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center
+            , fontSize = 24.sp
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        TextField(
+        // Input Fields with Padding
+        CustomTextField(
             value = loginState.email,
             onValueChange = { viewModel.updateEmail(it) },
-            label = { Text("Email") },
-            isError = loginState.email.isEmpty(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
+            label = "Email",
+            placeholder = "Enter your email",
+            isPassword = false,
+            errorMessage = if (loginState.email.isEmpty()) "Email cannot be empty" else null,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp) // Add padding here
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        TextField(
+        CustomTextField(
             value = loginState.password,
             onValueChange = { viewModel.updatePassword(it) },
-            label = { Text("Password") },
-            isError = loginState.password.isEmpty(),
-            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
-            visualTransformation = PasswordVisualTransformation(),
+            label = "Password",
+            placeholder = "Enter your password",
+            isPassword = true,
+            errorMessage = if (loginState.password.isEmpty()) "Password cannot be empty" else null,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -112,7 +121,9 @@ fun LoginScreen(
             buttonType = ButtonType.CONTAINED,
             icon = null,
             enabled = !loginState.isLoading,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -144,24 +155,29 @@ fun LoginScreen(
             text = stringResource(R.string.loginWithGoogle),
             buttonType = ButtonType.OUTLINED,
             enabled = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Bottom Text (Signup & Forgot Password)
         Row(
             horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = stringResource(R.string.didntHaveAccount),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Dark,
-                modifier = Modifier.padding(end = 4.dp)
+                color = Dark
             )
+            Spacer(modifier = Modifier.width(4.dp))
             TextButton(
                 onClick = { navController.navigate("signup") },
-                modifier = Modifier.padding(0.dp)
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.height(IntrinsicSize.Min)
             ) {
                 Text(
                     text = stringResource(R.string.signup),

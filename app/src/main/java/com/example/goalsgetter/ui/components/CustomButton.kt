@@ -40,9 +40,10 @@ fun CustomButton(
         ButtonType.CONTAINED -> {
             Button(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = modifier
+                    .height(48.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = color),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(4.dp),
                 enabled = enabled
             ) {
                 Row(
@@ -60,7 +61,7 @@ fun CustomButton(
                         text = text,
                         color = textColor,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp
+                        fontSize = 16.sp
                     )
                 }
             }
@@ -68,9 +69,10 @@ fun CustomButton(
         ButtonType.OUTLINED -> {
             Button(
                 onClick = onClick,
-                modifier = modifier,
+                modifier = modifier
+                    .height(48.dp), // Matches 12 "h-12" in Tailwind (48dp)
                 colors = ButtonDefaults.outlinedButtonColors(contentColor = color),
-                shape = RoundedCornerShape(32.dp),
+                shape = RoundedCornerShape(4.dp),
                 border = BorderStroke(1.dp, color),
                 enabled = enabled,
             ) {
@@ -89,7 +91,7 @@ fun CustomButton(
                         text = text,
                         color = color,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp
+                        fontSize = 16.sp
                     )
                 }
             }

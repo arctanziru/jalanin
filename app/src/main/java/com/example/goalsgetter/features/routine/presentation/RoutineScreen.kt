@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.goalsgetter.R
@@ -27,6 +28,8 @@ import com.example.goalsgetter.core.navigation.Screen
 import com.example.goalsgetter.features.routine.common.RoutineActionDialog
 import com.example.goalsgetter.features.routine.data.Activity
 import com.example.goalsgetter.features.routine.data.Routine
+import com.example.goalsgetter.ui.components.AppBar
+import com.example.goalsgetter.ui.components.AppBarVariant
 import com.example.goalsgetter.ui.components.BottomBar
 import com.example.goalsgetter.ui.components.CustomCard
 import com.example.goalsgetter.ui.components.PaddingMode
@@ -58,111 +61,128 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
         bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(16.dp)
-        ) {
-            Text(
-                stringResource(R.string.whatsYourGoal),
-                style = MaterialTheme.typography.headlineMedium
+
+        ){
+            AppBar(
+                title =  stringResource(R.string.appbarRoutine),
+                variant = AppBarVariant.PLAIN,
+                navController = navController,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            CustomCard {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(12.dp)
+            ) {
                 Text(
-                    stringResource(R.string.todayRoutine),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold
-                )
-                if (routinesState.isLoading && routinesState.routines.isEmpty()) {
-                    CircularProgressIndicator()
-                } else if (routinesState.errorMessage != null) {
-                    Text(
-                        text = routinesState.errorMessage ?: "",
-                        color = MaterialTheme.colorScheme.error
+                    stringResource(R.string.whatsYourGoal),
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.SemiBold
+
                     )
-                } else {
-                    routinesState.routines.find { it?.active == true }?.let { routine ->
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(routine.title, style = MaterialTheme.typography.titleLarge)
-                            Text(routine.description, style = MaterialTheme.typography.bodyMedium)
-                            routine.activities.forEach { activity ->
-                                ActivityItem(
-                                    activity,
-                                    onToggleCompleted = { activityId, isCompleted ->
-                                        viewModel.toggleActivityCompleted(
-                                            routine.id,
-                                            activityId,
-                                            isCompleted
-                                        )
-                                    }
-                                )
-                            }
-                        }
-                    } ?: Text(stringResource(R.string.noActiveRoutine))
-                }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            CustomCard(paddingMode = PaddingMode.VERTICAL) {
-                Row(modifier = Modifier.padding(horizontal = 24.dp)) {
+
+                //Today Routine
+                CustomCard {
                     Text(
-                        stringResource(R.string.routineList),
+                        stringResource(R.string.todayRoutine),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                LazyColumn {
                     if (routinesState.isLoading && routinesState.routines.isEmpty()) {
-                        item { CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally)) }
+                        CircularProgressIndicator()
                     } else if (routinesState.errorMessage != null) {
-                        item {
-                            Text(
-                                text = routinesState.errorMessage ?: "",
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    } else if (routinesState.routines.isEmpty()) {
-                        item {
-                            Text(stringResource(R.string.noRoutines))
-                        }
+                        Text(
+                            text = routinesState.errorMessage ?: "",
+                            color = MaterialTheme.colorScheme.error
+                        )
                     } else {
-                        val nonNullRoutines = routinesState.routines.filterNotNull()
-                        items(nonNullRoutines) { routine ->
-                            RoutineListItem(
-                                routine = routine,
-                                onClick = { viewModel.showDialog(routine) }
-                            )
-                        }
+                        routinesState.routines.find { it?.active == true }?.let { routine ->
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(routine.title, style = MaterialTheme.typography.titleLarge)
+                                Text(routine.description, style = MaterialTheme.typography.bodyMedium)
+                                routine.activities.forEach { activity ->
+                                    ActivityItem(
+                                        activity,
+                                        onToggleCompleted = { activityId, isCompleted ->
+                                            viewModel.toggleActivityCompleted(
+                                                routine.id,
+                                                activityId,
+                                                isCompleted
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                        } ?: Text(stringResource(R.string.noActiveRoutine))
                     }
                 }
 
-                dialogState?.let { routine ->
-                    RoutineActionDialog(
-                        routine = routine,
-                        onEditClick = {
-                            viewModel.hideDialog()
-                            navController.navigate(Screen.RoutineCreateEdit.createRoute(routine.id))
-                        },
-                        onActiveClick = {
-                            viewModel.toggleActiveRoutine(routine.id, !routine.active)
-                            viewModel.hideDialog()
-                        },
-                        onDismiss = viewModel::hideDialog,
-                        active = routine.active,
-                        onDeleteClick = {
-                            viewModel.deleteRoutine(routine.id)
-                            viewModel.hideDialog()
-                        }
-                    )
-                }
-            }
+                Spacer(modifier = Modifier.height(16.dp))
 
+                //All Routine
+                CustomCard(paddingMode = PaddingMode.VERTICAL) {
+                    Row(modifier = Modifier.padding(horizontal = 24.dp)) {
+                        Text(
+                            stringResource(R.string.routineList),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyColumn {
+                        if (routinesState.isLoading && routinesState.routines.isEmpty()) {
+                            item { CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally)) }
+                        } else if (routinesState.errorMessage != null) {
+                            item {
+                                Text(
+                                    text = routinesState.errorMessage ?: "",
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        } else if (routinesState.routines.isEmpty()) {
+                            item {
+                                Text(stringResource(R.string.noRoutines))
+                            }
+                        } else {
+                            val nonNullRoutines = routinesState.routines.filterNotNull()
+                            items(nonNullRoutines) { routine ->
+                                RoutineListItem(
+                                    routine = routine,
+                                    onClick = { viewModel.showDialog(routine) }
+                                )
+                            }
+                        }
+                    }
+
+                    dialogState?.let { routine ->
+                        RoutineActionDialog(
+                            routine = routine,
+                            onEditClick = {
+                                viewModel.hideDialog()
+                                navController.navigate(Screen.RoutineCreateEdit.createRoute(routine.id))
+                            },
+                            onActiveClick = {
+                                viewModel.toggleActiveRoutine(routine.id, !routine.active)
+                                viewModel.hideDialog()
+                            },
+                            onDismiss = viewModel::hideDialog,
+                            active = routine.active,
+                            onDeleteClick = {
+                                viewModel.deleteRoutine(routine.id)
+                                viewModel.hideDialog()
+                            }
+                        )
+                    }
+                }
+
+            }
         }
+
     }
 }
 

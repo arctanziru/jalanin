@@ -20,3 +20,4 @@ class AuthRepository @Inject constructor(
         firebaseAuthService.logout()
     }
 }
+                                                                                            
