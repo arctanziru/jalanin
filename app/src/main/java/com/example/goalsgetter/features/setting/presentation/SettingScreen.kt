@@ -47,9 +47,9 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
         bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
 
-        Column(){
+        Column() {
             AppBar(
-                title =  stringResource(R.string.appbarSetting),
+                title = stringResource(R.string.appbarSetting),
                 variant = AppBarVariant.PLAIN,
                 navController = navController,
             )
@@ -73,13 +73,16 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                             headlineContent = {
                                 Text(
                                     text = stringResource(R.string.settingLanguage),
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Normal
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Normal
 
                                 )
                             },
                             trailingContent = {
-                                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowForward,
+                                    contentDescription = null
+                                )
                             },
                             modifier = Modifier
                                 .fillMaxWidth() // Forces ListItem to take full width
@@ -94,20 +97,25 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                             headlineContent = {
                                 Text(
                                     text = "Log Out",
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Normal
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Normal
 
                                 )
                             },
                             trailingContent = {
-                                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowForward,
+                                    contentDescription = null
+                                )
                             },
                             modifier = Modifier
                                 .fillMaxWidth() // Forces ListItem to take full width
                                 .background(Color.White)
                                 .clickable {
-                                    navController.navigate("login") {
-                                        popUpTo("splash") { inclusive = true }
+                                    viewModel.logout {
+                                        navController.navigate("login") {
+                                            popUpTo("splash") { inclusive = true }
+                                        }
                                     }
                                 }
                                 .padding(horizontal = 12.dp, vertical = 12.dp),
@@ -142,7 +150,7 @@ fun LanguageSelectionDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text= stringResource(R.string.langChoose)) },
+        title = { Text(text = stringResource(R.string.langChoose)) },
         text = {
             Column {
                 TextButton(

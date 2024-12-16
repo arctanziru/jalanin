@@ -7,15 +7,17 @@ import javax.inject.Inject
 class RoutineRepository @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
-    suspend fun getRoutines(): List<Routine> {
+    suspend fun getRoutines(userEmail: String): List<Routine> {
         return try {
-            val snapshot = firestore.collection("routines").get().await()
+            val snapshot =
+                firestore.collection("routines").whereEqualTo("userEmail", userEmail).get().await()
             snapshot.documents.map { document ->
                 Routine(
                     id = document.id,
                     title = document.getString("title") ?: "",
                     description = document.getString("description") ?: "",
-                    active =  document.getBoolean("active") ?: false,
+                    active = document.getBoolean("active") ?: false,
+                    userEmail = document.getString("userEmail") ?: "",
                     activities = (document.get("activities") as? List<Map<String, Any>>)?.map {
                         Activity(
                             title = it["title"] as? String ?: "",
@@ -41,6 +43,7 @@ class RoutineRepository @Inject constructor(
                 Routine(
                     id = it.id,
                     title = it.getString("title") ?: "",
+                    userEmail = it.getString("userEmail") ?: "",
                     description = it.getString("description") ?: "",
                     active = it.getBoolean("active") ?: false,
                     activities = (it.get("activities") as? List<Map<String, Any>>)?.map {
@@ -61,7 +64,7 @@ class RoutineRepository @Inject constructor(
     suspend fun saveRoutine(routine: Routine): Boolean {
         return try {
             firestore.collection("routines")
-                .document(routine.id.takeIf { !it.isNullOrEmpty() } ?: firestore.collection("routines")
+                .document(routine.id.takeIf { it.isNotEmpty() } ?: firestore.collection("routines")
                     .document().id)
                 .set(routine)
                 .await()
@@ -80,6 +83,7 @@ class RoutineRepository @Inject constructor(
                     title = it.getString("title") ?: "",
                     description = it.getString("description") ?: "",
                     active = it.getBoolean("active") ?: false,
+                    userEmail = it.getString("userEmail") ?: "",
                     activities = (it.get("activities") as? List<Map<String, Any>>)?.map {
                         Activity(
                             title = it["title"] as? String ?: "",

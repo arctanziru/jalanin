@@ -1,6 +1,7 @@
 package com.example.goalsgetter.features.routine.data
 
 data class Routine(
+    val userEmail: String,
     val id: String = "",
     val title: String = "",
     val description: String = "",

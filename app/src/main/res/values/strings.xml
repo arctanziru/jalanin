@@ -26,4 +26,5 @@
     <string name="appbarSetting">Setting</string>
     <string name="settingLanguage">Language</string>
     <string name="langChoose">Select Language</string>
+    <string name="greeting">Good to see you</string>
 </resources>

@@ -31,9 +31,9 @@ fun DashboardScreen(
     navController: NavController,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    val greeting by viewModel.greeting.collectAsState()
     val motivationQuoteState by viewModel.motivationQuote.collectAsState()
     val activeRoutineState by viewModel.activeRoutine.collectAsState()
+    val fullName by viewModel.fullName.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -55,7 +55,7 @@ fun DashboardScreen(
                     .padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
-                GreetingSection(greeting)
+                GreetingSection("${stringResource(R.string.greeting)}, $fullName")
 
                 MotivationQuoteSection(motivationQuoteState)
 

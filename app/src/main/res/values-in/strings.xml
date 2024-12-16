@@ -24,4 +24,5 @@
     <string name="appbarSetting">Pengaturan</string>
     <string name="settingLanguage">Bahasa</string>
     <string name="langChoose">Pilih Bahasa</string>
+    <string name="greeting">Senang melihatmu</string>
 </resources>

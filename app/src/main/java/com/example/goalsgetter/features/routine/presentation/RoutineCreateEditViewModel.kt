@@ -7,6 +7,7 @@ import com.example.goalsgetter.features.routine.data.Activity
 import com.example.goalsgetter.features.routine.data.Routine
 import com.example.goalsgetter.features.routine.domain.GetRoutineByIdUseCase
 import com.example.goalsgetter.features.routine.domain.SaveRoutineUseCase
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class RoutineCreateEditViewModel @Inject constructor(
     private val saveRoutineUseCase: SaveRoutineUseCase,
-    private val getRoutineByIdUseCase: GetRoutineByIdUseCase
+    private val getRoutineByIdUseCase: GetRoutineByIdUseCase,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RoutineFormState())
@@ -85,6 +87,13 @@ class RoutineCreateEditViewModel @Inject constructor(
             return
         }
 
+        val userEmail = firebaseAuth.currentUser?.email ?: ""
+
+        if (userEmail.isEmpty()) {
+            _state.value = currentState.copy(errorMessage = "Terjadi error, mohon coba lagi")
+            return
+        }
+
         viewModelScope.launch {
             saveRoutineUseCase.execute(
                 Routine(
@@ -92,7 +101,8 @@ class RoutineCreateEditViewModel @Inject constructor(
                     title = currentState.title,
                     description = currentState.description,
                     active = currentState.active,
-                    activities = currentState.activities
+                    activities = currentState.activities,
+                    userEmail = userEmail
                 )
             ).collect { result ->
                 when (result) {

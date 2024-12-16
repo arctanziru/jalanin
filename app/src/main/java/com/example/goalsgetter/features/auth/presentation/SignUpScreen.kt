@@ -88,6 +88,18 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        CustomTextField(
+            value = signUpState.fullName,
+            onValueChange = { viewModel.updateFullName(it) },
+            label = "Full Name",
+            placeholder = "Enter your full name",
+            isPassword = false,
+            errorMessage = if (signUpState.fullName.isEmpty()) "Email cannot be empty" else null,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         // Email Field
         CustomTextField(
             value = signUpState.email,

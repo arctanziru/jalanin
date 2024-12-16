@@ -5,7 +5,6 @@ import com.example.goalsgetter.features.auth.domain.LoginUseCase
 import com.example.goalsgetter.core.network.FirebaseAuthService
 import com.example.goalsgetter.features.auth.domain.LogoutUseCase
 import com.example.goalsgetter.features.auth.domain.SignUpUseCase
-import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,12 +19,6 @@ object AuthModule {
     @Singleton
     fun provideAuthRepository(firebaseAuthService: FirebaseAuthService): AuthRepository {
         return AuthRepository(firebaseAuthService)
-    }
-
-    @Provides
-    @Singleton
-    fun provideFirebaseAuth(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
     }
 
     @Provides

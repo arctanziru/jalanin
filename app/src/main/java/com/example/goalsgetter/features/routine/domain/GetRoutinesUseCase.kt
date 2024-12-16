@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetRoutinesUseCase @Inject constructor(private val routineRepository: RoutineRepository) {
-    suspend fun execute(): Flow<Result<List<Routine?>>> {
+    suspend fun execute(userEmail: String): Flow<Result<List<Routine?>>> {
         return flow {
-            val result = routineRepository.getRoutines()
+            val result = routineRepository.getRoutines(userEmail)
             emit(result)
         }.asResult()
     }

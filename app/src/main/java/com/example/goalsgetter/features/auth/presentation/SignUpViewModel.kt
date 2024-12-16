@@ -13,6 +13,7 @@ import javax.inject.Inject
 data class SignUpState(
     val email: String = "",
     val password: String = "",
+    val fullName: String = "",
     val confirmPassword: String = "",
     val isLoading: Boolean = false,
     val isSignUpSuccessful: Boolean = false,
@@ -31,6 +32,10 @@ class SignUpViewModel @Inject constructor(
         _signUpState.value = _signUpState.value.copy(email = email)
     }
 
+    fun updateFullName(fullName: String) {
+        _signUpState.value = _signUpState.value.copy(fullName = fullName)
+    }
+
     fun updatePassword(password: String) {
         _signUpState.value = _signUpState.value.copy(password = password)
     }
@@ -42,7 +47,7 @@ class SignUpViewModel @Inject constructor(
     fun signUp() {
         val currentState = _signUpState.value
 
-        if (currentState.email.isEmpty() || currentState.password.isEmpty()) {
+        if (currentState.fullName.isEmpty() || currentState.email.isEmpty() || currentState.password.isEmpty()) {
             _signUpState.value =
                 currentState.copy(errorMessage = "Email and Password must not be empty.")
             return
@@ -57,7 +62,7 @@ class SignUpViewModel @Inject constructor(
         _signUpState.value = currentState.copy(isLoading = true, errorMessage = null)
 
         viewModelScope.launch {
-            signUpUseCase.execute(currentState.email, currentState.password).collect { result ->
+            signUpUseCase.execute(currentState.email, currentState.password, currentState.fullName).collect { result ->
                 when (result) {
                     is Result.Loading -> {
                         _signUpState.value = currentState.copy(isLoading = true)

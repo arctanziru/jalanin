@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalsgetter.features.dashboard.domain.GetMotivationQuoteUseCase
 import com.example.goalsgetter.features.routine.data.Routine
-import com.example.goalsgetter.features.routine.domain.GetActiveRoutineUseCase
+import com.example.goalsgetter.features.routine.domain.GetRoutinesUseCase
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,11 +27,11 @@ data class ActiveRoutine(
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val getMotivationQuoteUseCase: GetMotivationQuoteUseCase,
-    private val getActiveRoutineUseCase: GetActiveRoutineUseCase
+    private val getRoutinesUseCase: GetRoutinesUseCase,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
-
-    private val _greeting = MutableStateFlow("Selamat Malam, User")
-    val greeting: StateFlow<String> = _greeting
+    private val _fullName = MutableStateFlow<String?>(firebaseAuth.currentUser?.displayName)
+    val fullName: StateFlow<String?> = _fullName
 
     private val _motivationQuote = MutableStateFlow(MotivationQuote())
     val motivationQuote: StateFlow<MotivationQuote> = _motivationQuote
@@ -71,10 +72,12 @@ class DashboardViewModel @Inject constructor(
     private fun fetchActiveRoutine() {
         _activeRoutine.value = _activeRoutine.value.copy(isLoading = true)
         viewModelScope.launch {
-            getActiveRoutineUseCase.execute().collect { result ->
+            val userEmail = firebaseAuth.currentUser?.email ?: ""
+            getRoutinesUseCase.execute(userEmail).collect { result ->
                 when (result) {
                     is com.example.goalsgetter.core.utils.Result.Success -> {
-                        _activeRoutine.value = ActiveRoutine(routine = result.data)
+                        val routine = result.data.find { it?.active == true }
+                        _activeRoutine.value = ActiveRoutine(routine)
                     }
                     is com.example.goalsgetter.core.utils.Result.Error -> {
                         _activeRoutine.value = ActiveRoutine(

@@ -7,6 +7,7 @@ import com.example.goalsgetter.features.routine.data.Routine
 import com.example.goalsgetter.features.routine.domain.DeleteRoutineUseCase
 import com.example.goalsgetter.features.routine.domain.GetRoutinesUseCase
 import com.example.goalsgetter.features.routine.domain.SaveRoutineUseCase
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class RoutineViewModel @Inject constructor(
     private val getRoutinesUseCase: GetRoutinesUseCase,
     private val saveRoutineUseCase: SaveRoutineUseCase,
-    private val deleteRoutineUseCase: DeleteRoutineUseCase
+    private val deleteRoutineUseCase: DeleteRoutineUseCase,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
     private val _routinesState = MutableStateFlow(RoutinesState())
     val routinesState: StateFlow<RoutinesState> = _routinesState
@@ -39,8 +41,9 @@ class RoutineViewModel @Inject constructor(
     }
 
     private fun fetchRoutines() {
+        val userEmail = firebaseAuth.currentUser?.email ?: ""
         viewModelScope.launch {
-            getRoutinesUseCase.execute().collect { result ->
+            getRoutinesUseCase.execute(userEmail).collect { result ->
                 when (result) {
                     is Result.Loading -> _routinesState.value =
                         _routinesState.value.copy(isLoading = true)
@@ -85,13 +88,16 @@ class RoutineViewModel @Inject constructor(
     }
 
     private suspend fun saveRoutine(routine: Routine) {
+        val userEmail = firebaseAuth.currentUser?.email ?: ""
+
         saveRoutineUseCase.execute(
             Routine(
                 id = routine.id,
                 title = routine.title,
                 description = routine.description,
                 activities = routine.activities,
-                active = routine.active
+                active = routine.active,
+                userEmail = userEmail
             )
         ).collect { result ->
             when (result) {

@@ -9,9 +9,9 @@ import com.example.goalsgetter.core.utils.asResult
 import javax.inject.Inject
 
 class SignUpUseCase @Inject constructor(private val authRepository: AuthRepository) {
-    suspend fun execute(email: String, password: String): Flow<Result<FirebaseUser?>> {
+    suspend fun execute(email: String, password: String, fullName: String): Flow<Result<FirebaseUser?>> {
         return flow {
-            val result = authRepository.register(email, password)
+            val result = authRepository.register(email, password, fullName)
             emit(result)
         }.asResult()
     }
