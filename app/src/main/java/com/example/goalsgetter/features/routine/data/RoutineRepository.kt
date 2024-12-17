@@ -20,6 +20,7 @@ class RoutineRepository @Inject constructor(
                     userEmail = document.getString("userEmail") ?: "",
                     activities = (document.get("activities") as? List<Map<String, Any>>)?.map {
                         Activity(
+                            id = it["string"] as? String ?: "",
                             title = it["title"] as? String ?: "",
                             description = it["description"] as? String ?: "",
                             completed = it["completed"] as? Boolean ?: false
@@ -29,35 +30,6 @@ class RoutineRepository @Inject constructor(
             }
         } catch (e: Exception) {
             emptyList()
-        }
-    }
-
-    suspend fun getActiveRoutine(): Routine? {
-        return try {
-            val snapshot = firestore.collection("routines")
-                .whereEqualTo("active", true)
-                .get()
-                .await()
-            val document = snapshot.documents.firstOrNull()
-            document?.let { it ->
-                Routine(
-                    id = it.id,
-                    title = it.getString("title") ?: "",
-                    userEmail = it.getString("userEmail") ?: "",
-                    description = it.getString("description") ?: "",
-                    active = it.getBoolean("active") ?: false,
-                    activities = (it.get("activities") as? List<Map<String, Any>>)?.map {
-                        Activity(
-                            id = it["id"] as? String ?: "",
-                            title = it["title"] as? String ?: "",
-                            description = it["description"] as? String ?: "",
-                            completed = it["completed"] as? Boolean ?: false
-                        )
-                    } ?: emptyList()
-                )
-            }
-        } catch (e: Exception) {
-            null
         }
     }
 
@@ -86,6 +58,7 @@ class RoutineRepository @Inject constructor(
                     userEmail = it.getString("userEmail") ?: "",
                     activities = (it.get("activities") as? List<Map<String, Any>>)?.map {
                         Activity(
+                            id = it["id"] as? String ?: "",
                             title = it["title"] as? String ?: "",
                             description = it["description"] as? String ?: "",
                             completed = it["completed"] as? Boolean ?: false
