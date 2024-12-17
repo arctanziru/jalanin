@@ -2,6 +2,7 @@ package com.example.goalsgetter.features.routine.presentation
 
 import CustomTextField
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -33,8 +35,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.goalsgetter.features.routine.data.Activity
@@ -76,7 +81,8 @@ fun RoutineCreateEditScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (isEdit) "Edit Rencana" else "Tambah Rencana") },
+                modifier = Modifier.background(color = Color.White),
+                title = { Text(if (isEdit) stringResource(R.string.editRoutineBar) else stringResource(R.string.createRoutineBar)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -89,99 +95,118 @@ fun RoutineCreateEditScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            CustomTextField(
-                value = state.title,
-                onValueChange = viewModel::updateTitle,
-                label = "Nama Rencana",
-                placeholder = "Masukkan nama rencana",
-                modifier = Modifier.fillMaxWidth()
-            )
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f) // Makes LazyColumn take up the remaining space
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    // Title and Description Fields
+                    CustomTextField(
+                        value = state.title,
+                        onValueChange = viewModel::updateTitle,
+                        label = stringResource(R.string.createRoutineName),
+                        placeholder = stringResource(R.string.createRoutineNamePlaceholder),
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-            CustomTextField(
-                value = state.description,
-                onValueChange = viewModel::updateDescription,
-                label = "Deskripsi Rencana",
-                placeholder = "Masukkan deskripsi rencana",
-                modifier = Modifier.fillMaxWidth()
-            )
+                    CustomTextField(
+                        value = state.description,
+                        onValueChange = viewModel::updateDescription,
+                        label = stringResource(R.string.createRoutineDesc),
+                        placeholder = stringResource(R.string.createRoutineDescPlaceholder),
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-            Text("Daftar Aktivitas", style = MaterialTheme.typography.titleMedium)
+                    Spacer(modifier = Modifier.height(24.dp))
 
-            LazyColumn {
+                    Text(stringResource(R.string.activity), style = MaterialTheme.typography.titleMedium)
+                }
+
+                // Activity List
                 items(state.activities) { activity ->
                     ActivityItem(
                         activity = activity,
                         onRemove = { viewModel.removeActivity(it) }
                     )
                 }
-            }
 
-            Column (
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                CustomTextField(
-                    value = newActivityTitle,
-                    onValueChange = { newActivityTitle = it },
-                    label = "Nama Aktivitas",
-                    placeholder = "Masukkan nama aktivitas",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                )
+                // Add New Activity
+                item {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        CustomTextField(
+                            value = newActivityTitle,
+                            onValueChange = { newActivityTitle = it },
+                            label = stringResource(R.string.createActivityName),
+                            placeholder = stringResource(R.string.createActivityNamePlaceholder),
+                            modifier = Modifier.fillMaxWidth()
+                        )
 
-                CustomTextField(
-                    value = newActivityDescription,
-                    onValueChange = { newActivityDescription = it },
-                    label = "Deskripsi Aktivitas",
-                    placeholder = "Masukkan deskripsi aktivitas",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                )
-                Button(
-                    onClick = {
-                        if (newActivityTitle.isNotBlank() && newActivityDescription.isNotBlank()) {
-                            viewModel.addActivity(
-                                Activity(
-                                    title = newActivityTitle,
-                                    description = newActivityDescription,
-                                    completed = false
-                                )
-                            )
-                            newActivityTitle = ""
-                            newActivityDescription = ""
+                        CustomTextField(
+                            value = newActivityDescription,
+                            onValueChange = { newActivityDescription = it },
+                            label = stringResource(R.string.createActivityDescription),
+                            placeholder = stringResource(R.string.createActivityDescriptionPlaceholder),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(48.dp),
+                            shape = RoundedCornerShape(4.dp),
+                            onClick = {
+                                if (newActivityTitle.isNotBlank() && newActivityDescription.isNotBlank()) {
+                                    viewModel.addActivity(
+                                        Activity(
+                                            title = newActivityTitle,
+                                            description = newActivityDescription,
+                                            completed = false
+                                        )
+                                    )
+                                    newActivityTitle = ""
+                                    newActivityDescription = ""
+                                }
+                            }
+                        ) {
+                            Text(stringResource(R.string.saveNewActivity))
                         }
                     }
-                ) {
-                    Text("+")
                 }
+
+                // Error Message
+                item {
+                    state.errorMessage?.let { errorMessage ->
+                        Text(
+                            text = errorMessage,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+
+                // Save Button
+                item {
+                    CustomButton(
+                        color = Primary,
+                        onClick = { viewModel.saveRoutine() },
+                        text = if (state.isSaving) stringResource(R.string.savingRoutine) else if (isEdit) stringResource(R.string.updateRoutine) else stringResource(R.string.saveRoutine),
+                        textColor = MaterialTheme.colorScheme.onPrimary,
+                        enabled = !state.isSaving,
+                        buttonType = ButtonType.CONTAINED,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                }
+
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Error Message
-            state.errorMessage?.let { errorMessage ->
-                Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-
-            CustomButton(
-                color = Primary,
-                onClick = { viewModel.saveRoutine() },
-                text = if (state.isSaving) "Menyimpan..." else if (isEdit) "Update Rencana" else "Simpan Rencana",
-                textColor = MaterialTheme.colorScheme.onPrimary,
-                enabled = !state.isSaving,
-                buttonType = ButtonType.CONTAINED,
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
+
 }
 
 @Composable
@@ -194,8 +219,8 @@ fun ActivityItem(activity: Activity, onRemove: (Activity) -> Unit) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
-            Text(activity.title, style = MaterialTheme.typography.bodyMedium)
-            Text(activity.description, style = MaterialTheme.typography.bodySmall)
+            Text(activity.title, style = MaterialTheme.typography.bodyMedium, fontSize = 18.sp)
+            Text(activity.description, style = MaterialTheme.typography.bodySmall, fontSize = 14.sp)
         }
         IconButton(onClick = { onRemove(activity) }) {
             Icon(Icons.Default.Delete, contentDescription = "Delete Activity")

@@ -27,4 +27,26 @@
     <string name="settingLanguage">Language</string>
     <string name="langChoose">Select Language</string>
     <string name="greeting">Good to see you</string>
+    <string name="authInputEmail">Input Your Email</string>
+    <string name="authInputPassword">Input Your Password</string>
+    <string name="authConfirmPassword">"Re-Enter Your Password "</string>
+    <string name="authLabelConfirmPassword">Password Confirmation</string>
+    <string name="authLabelPassword">Password</string>
+    <string name="activity">Activity</string>
+    <string name="saveNewActivity">Save +</string>
+    <string name="createRoutineName">Routine Name</string>
+    <string name="createRoutineNamePlaceholder">Enter Routine Name</string>
+    <string name="createRoutineDesc">Routine Description</string>
+    <string name="createRoutineDescPlaceholder">Enter Routine Description</string>
+    <string name="createActivityName">Activity Name</string>
+    <string name="createActivityNamePlaceholder">Enter Activity Name</string>
+    <string name="createActivityDescription">Activity Description</string>
+    <string name="createActivityDescriptionPlaceholder">Enter Activity Description</string>
+    <string name="createRoutineBar">Add Routine</string>
+    <string name="editRoutineBar">Edit Routine</string>
+    <string name="savingRoutine">Saving...</string>
+    <string name="saveRoutine">Save Routine</string>
+    <string name="updateRoutine">Update Routine</string>
+    <string name="activeRoutine">Active Routine :</string>
+    <string name="completeStatus">Completed</string>
 </resources>

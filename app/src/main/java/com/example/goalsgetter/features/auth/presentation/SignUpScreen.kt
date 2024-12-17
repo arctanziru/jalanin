@@ -66,8 +66,10 @@ fun SignUpScreen(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "App Logo"
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "App Logo",
+                        modifier = Modifier.size(120.dp)
+
             )
         }
 
@@ -80,10 +82,11 @@ fun SignUpScreen(
             fontSize = 24.sp
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(18.dp))
         Text(
             text = stringResource(R.string.signup),
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
+            fontSize = 18.sp
         )
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -105,7 +108,7 @@ fun SignUpScreen(
             value = signUpState.email,
             onValueChange = { viewModel.updateEmail(it) },
             label = "Email",
-            placeholder = "Enter your email",
+            placeholder = stringResource(R.string.authInputEmail),
             isPassword = false,
             errorMessage = if (signUpState.email.isEmpty()) "Email cannot be empty" else null,
             modifier = Modifier.fillMaxWidth()
@@ -117,8 +120,8 @@ fun SignUpScreen(
         CustomTextField(
             value = signUpState.password,
             onValueChange = { viewModel.updatePassword(it) },
-            label = "Password",
-            placeholder = "Enter your password",
+            label = stringResource(R.string.authLabelPassword),
+            placeholder = stringResource(R.string.authInputPassword),
             isPassword = true,
             errorMessage = if (signUpState.password.isEmpty()) "Password cannot be empty" else null,
             modifier = Modifier.fillMaxWidth()
@@ -130,8 +133,8 @@ fun SignUpScreen(
         CustomTextField(
             value = signUpState.confirmPassword,
             onValueChange = { viewModel.updateConfirmPassword(it) },
-            label = "Confirm Password",
-            placeholder = "Re-enter your password",
+            label = stringResource(R.string.authLabelConfirmPassword),
+            placeholder = stringResource(R.string.authConfirmPassword),
             isPassword = true,
             errorMessage = if (signUpState.confirmPassword.isEmpty()) "Confirm Password cannot be empty" else null,
             modifier = Modifier.fillMaxWidth()
@@ -171,7 +174,7 @@ fun SignUpScreen(
             )
             Spacer(modifier = Modifier.width(4.dp))
             TextButton(
-                onClick = { navController.navigate("signin") },
+                onClick = { navController.navigate("login") },
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier.height(IntrinsicSize.Min)
             ) {

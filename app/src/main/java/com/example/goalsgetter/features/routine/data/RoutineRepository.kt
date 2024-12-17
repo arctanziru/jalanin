@@ -20,7 +20,7 @@ class RoutineRepository @Inject constructor(
                     userEmail = document.getString("userEmail") ?: "",
                     activities = (document.get("activities") as? List<Map<String, Any>>)?.map {
                         Activity(
-                            id = it["string"] as? String ?: "",
+                            id = it["id"] as? String ?: "",
                             title = it["title"] as? String ?: "",
                             description = it["description"] as? String ?: "",
                             completed = it["completed"] as? Boolean ?: false

@@ -3,12 +3,16 @@ package com.example.goalsgetter.features.setting.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.AlertDialog
@@ -20,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,6 +48,9 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
     val context = LocalContext.current
     val showLanguageDialog = remember { mutableStateOf(false) }
 
+    val fullName = viewModel.fullName.collectAsState().value
+    val avatarLetter = fullName?.firstOrNull()?.uppercaseChar() ?: 'G' // Default to 'G' for Guest
+
     Scaffold(
         bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
@@ -62,6 +70,39 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center // Centers content horizontally
+                ){
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally // Centers content within the column
+
+                    ){
+
+                            Box(
+                                contentAlignment = Alignment.Center,
+                                modifier = Modifier
+                                    .size(120.dp) // Circle size
+                                    .background(Color(0xFF26A69A), shape = CircleShape) // Circle shape with color
+                            ) {
+                                Text(
+                                    text = fullName?.firstOrNull()?.uppercaseChar()?.toString() ?: "G", // Avatar letter
+                                    fontSize = 48.sp, // Letter size
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White // Letter color
+                                )
+                            }
+
+                        Spacer(Modifier.height(10.dp))
+                        Text(
+                            text = fullName ?: "Guest", // Show fallback if null
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+
+                }
                 Spacer(modifier = Modifier.height(32.dp))
                 Card(
                     modifier = Modifier

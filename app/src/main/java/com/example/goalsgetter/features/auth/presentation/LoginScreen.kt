@@ -67,13 +67,13 @@ fun LoginScreen(
             contentAlignment = Alignment.Center
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = R.drawable.logo),
+                modifier = Modifier.size(120.dp),
                 contentDescription = "App Logo"
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
@@ -88,7 +88,7 @@ fun LoginScreen(
             value = loginState.email,
             onValueChange = { viewModel.updateEmail(it) },
             label = "Email",
-            placeholder = "Enter your email",
+            placeholder = stringResource(R.string.authInputEmail),
             isPassword = false,
             errorMessage = if (loginState.email.isEmpty()) "Email cannot be empty" else null,
             modifier = Modifier
@@ -101,8 +101,8 @@ fun LoginScreen(
         CustomTextField(
             value = loginState.password,
             onValueChange = { viewModel.updatePassword(it) },
-            label = "Password",
-            placeholder = "Enter your password",
+            label = stringResource(R.string.authLabelPassword),
+            placeholder =  stringResource(R.string.authInputPassword),
             isPassword = true,
             errorMessage = if (loginState.password.isEmpty()) "Password cannot be empty" else null,
             modifier = Modifier

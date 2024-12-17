@@ -25,4 +25,26 @@
     <string name="settingLanguage">Bahasa</string>
     <string name="langChoose">Pilih Bahasa</string>
     <string name="greeting">Senang melihatmu</string>
+    <string name="authInputEmail">Masukkan Email Anda</string>
+    <string name="authInputPassword">Masukkan Kata Sandi Anda</string>
+    <string name="authConfirmPassword">Masukkan Ulang Kata Sandi Anda</string>
+    <string name="authLabelConfirmPassword">Konfirmasi Kata Sandi</string>
+    <string name="authLabelPassword">Kata Sandi</string>
+    <string name="activity">Aktivitas</string>
+    <string name="saveNewActivity">Simpan +</string>
+    <string name="createRoutineName">Nama Rencana</string>
+    <string name="createRoutineNamePlaceholder">Masukkan Nama Rencana</string>
+    <string name="createRoutineDesc">Deskripsi Rencana</string>
+    <string name="createRoutineDescPlaceholder">Masukkan Deskripsi Rencana</string>
+    <string name="createActivityName">Nama Aktivitas</string>
+    <string name="createActivityNamePlaceholder">Masukkan Nama Aktivitas</string>
+    <string name="createActivityDescription">Deskripsi Aktivitas</string>
+    <string name="createActivityDescriptionPlaceholder">Masukkan Deskripsi Aktivitas</string>
+    <string name="createRoutineBar">Tambah Rencana</string>
+    <string name="editRoutineBar">Edit Rencana</string>
+    <string name="savingRoutine">Menyimpan...</string>
+    <string name="saveRoutine">Simpan Rencana</string>
+    <string name="updateRoutine">Update Rencana</string>
+    <string name="activeRoutine">Rencana Aktif :</string>
+    <string name="completeStatus">Selesai</string>
 </resources>

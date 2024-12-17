@@ -55,7 +55,7 @@ fun DashboardScreen(
                     .padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
-                GreetingSection("${stringResource(R.string.greeting)}, $fullName")
+                GreetingSection("${stringResource(R.string.greeting)}, ${fullName ?: "Guest"}")
 
                 MotivationQuoteSection(motivationQuoteState)
 
@@ -140,14 +140,48 @@ fun ActiveRoutineSection(activeRoutineState: ActiveRoutine) {
         when {
             activeRoutineState.routine != null -> {
                 Text(
-                    text = "Active Routine: ${activeRoutineState.routine.title}",
-                    style = MaterialTheme.typography.headlineSmall
+                    text =  stringResource(R.string.activeRoutine),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 16.sp
+                )
+                Text(
+                    text =  activeRoutineState.routine.title,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Medium
+
+                )
+                Text(
+                    text =  stringResource(R.string.createRoutineDesc),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Text(
+                    text =  activeRoutineState.routine.description,
+                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 16.sp, fontWeight = FontWeight.Light
+                )
+                Text(
+                    text = "${stringResource(R.string.activity) } :",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 14.sp, fontWeight = FontWeight.Medium
                 )
                 activeRoutineState.routine.activities.forEach { activity ->
-                    Text(
-                        text = "- ${activity.title} (${if (activity.completed) "Completed" else "Pending"})",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    Column(){
+                        Text(
+                            text = "${activity.title} (${if (activity.completed) stringResource(R.string.completeStatus) else "Pending"})",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 16.sp, fontWeight = FontWeight.Medium
+                        )
+                        Text(
+                            text = activity.description,
+                            style = MaterialTheme.typography.bodyMedium
+                            , fontSize = 14.sp
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+
                 }
             }
 
@@ -164,7 +198,7 @@ fun ActiveRoutineSection(activeRoutineState: ActiveRoutine) {
             }
 
             else -> {
-                Text(text = "No active routine found.")
+                Text(text = stringResource(R.string.noRoutines))
             }
         }
     }

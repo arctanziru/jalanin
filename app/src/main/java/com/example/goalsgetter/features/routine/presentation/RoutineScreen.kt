@@ -75,23 +75,27 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
                     .padding(innerPadding)
                     .padding(12.dp)
             ) {
-                Text(
-                    stringResource(R.string.whatsYourGoal),
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold
+                Row(
+                    modifier = Modifier.padding(24.dp, 12.dp)
+                ){
+                    Text(
+                        stringResource(R.string.whatsYourGoal),
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.SemiBold
 
                     )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
-
+                Spacer(modifier = Modifier.height(24.dp))
 
                 //Today Routine
                 CustomCard {
                     Text(
                         stringResource(R.string.todayRoutine),
                         style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
                     )
                     if (routinesState.isLoading && routinesState.routines.isEmpty()) {
                         CircularProgressIndicator()
@@ -102,9 +106,18 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
                         )
                     } else {
                         routinesState.routines.find { it?.active == true }?.let { routine ->
-                            Column(modifier = Modifier.padding(16.dp)) {
-                                Text(routine.title, style = MaterialTheme.typography.titleLarge)
-                                Text(routine.description, style = MaterialTheme.typography.bodyMedium)
+                            Column() {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = routine.title,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontSize = 24.sp, // Use sp instead of dp
+                                    fontWeight = FontWeight.Medium
+                                )
+                                Text(routine.description, style = MaterialTheme.typography.bodyMedium , fontSize = 16.sp)
+                                Text(stringResource(R.string.activity), style = MaterialTheme.typography.bodyMedium , fontSize = 14.sp, fontWeight = FontWeight.Medium)
+                                Spacer(modifier = Modifier.height(8.dp))
+
                                 routine.activities.forEach { activity ->
                                     ActivityItem(
                                         activity,
@@ -116,6 +129,8 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
                                             )
                                         }
                                     )
+                                    Spacer(modifier = Modifier.height(4.dp))
+
                                 }
                             }
                         } ?: Text(stringResource(R.string.noActiveRoutine))
@@ -126,17 +141,22 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
 
                 //All Routine
                 CustomCard(paddingMode = PaddingMode.VERTICAL) {
-                    Row(modifier = Modifier.padding(horizontal = 24.dp)) {
+                    Row(modifier=Modifier.padding(24.dp ,0.dp)) {
                         Text(
                             stringResource(R.string.routineList),
                             style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     LazyColumn {
                         if (routinesState.isLoading && routinesState.routines.isEmpty()) {
-                            item { CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally)) }
+                            item {
+                                Column(modifier = Modifier.padding(24.dp,0.dp)){
+                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                                }
+                            }
                         } else if (routinesState.errorMessage != null) {
                             item {
                                 Text(
@@ -146,7 +166,9 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
                             }
                         } else if (routinesState.routines.isEmpty()) {
                             item {
-                                Text(stringResource(R.string.noRoutines))
+                                Column(modifier=Modifier.padding(24.dp,0.dp)){
+                                    Text(text=stringResource(R.string.noRoutines))
+                                }
                             }
                         } else {
                             val nonNullRoutines = routinesState.routines.filterNotNull()
@@ -189,7 +211,7 @@ fun RoutineScreen(navController: NavController, viewModel: RoutineViewModel = hi
 @Composable
 fun ActivityItem(
     activity: Activity,
-    onToggleCompleted: (String, Boolean) -> Unit // Pass activityId instead of title
+    onToggleCompleted: (String, Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -203,9 +225,9 @@ fun ActivityItem(
             Text(activity.description, style = MaterialTheme.typography.bodySmall)
         }
         Checkbox(
-            checked = activity.completed,
+            checked = activity.completed, // Correctly reflects only this activity
             onCheckedChange = { isChecked ->
-                onToggleCompleted(activity.id, isChecked)
+                onToggleCompleted(activity.id, isChecked) // Pass the activity.id for specific updates
             }
         )
     }
@@ -224,8 +246,8 @@ fun RoutineListItem(routine: Routine, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = if (routine.active) Color(0xFFE7E7E7) else White)
     ) {
         Column(modifier = Modifier.padding(vertical = 8.dp, horizontal = 24.dp)) {
-            Text(text = routine.title, style = MaterialTheme.typography.headlineSmall)
-            Text(text = routine.description, style = MaterialTheme.typography.bodyMedium)
+            Text(text = routine.title, style = MaterialTheme.typography.headlineSmall, fontSize = 20.sp, fontWeight = FontWeight.Medium)
+            Text(text = routine.description, style = MaterialTheme.typography.bodyMedium, fontSize = 14.sp)
         }
     }
 }
