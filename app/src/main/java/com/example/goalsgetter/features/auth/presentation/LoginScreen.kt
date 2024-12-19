@@ -43,6 +43,7 @@ fun LoginScreen(
     LaunchedEffect(loginState.errorMessage) {
         loginState.errorMessage?.let {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.resetError()
         }
     }
 

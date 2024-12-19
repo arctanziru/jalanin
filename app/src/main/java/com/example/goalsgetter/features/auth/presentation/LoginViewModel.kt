@@ -60,6 +60,10 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         }
     }
 
+    fun resetError() {
+        _loginState.value = _loginState.value.copy(errorMessage = null)
+    }
+
     fun updateEmail(email: String) {
         _loginState.value = _loginState.value.copy(email = email)
     }

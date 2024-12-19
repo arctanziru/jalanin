@@ -44,6 +44,10 @@ class SignUpViewModel @Inject constructor(
         _signUpState.value = _signUpState.value.copy(confirmPassword = confirmPassword)
     }
 
+    fun resetError() {
+        _signUpState.value = _signUpState.value.copy(errorMessage = null)
+    }
+
     fun signUp() {
         val currentState = _signUpState.value
 
