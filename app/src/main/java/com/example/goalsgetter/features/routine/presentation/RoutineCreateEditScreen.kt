@@ -1,4 +1,4 @@
-package com.example.goalsgetter.features.goal.presentation
+package com.example.goalsgetter.features.routine.presentation
 
 import CustomTextField
 import android.widget.Toast
@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.goalsgetter.features.goal.data.Activity
+import com.example.goalsgetter.features.routine.data.Activity
 import com.example.goalsgetter.ui.components.ButtonType
 import com.example.goalsgetter.ui.components.CustomButton
 import com.example.goalsgetter.ui.theme.Primary

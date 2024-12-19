@@ -1,4 +1,4 @@
-package com.example.goalsgetter.features.goal.data
+package com.example.goalsgetter.features.routine.data
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await

@@ -1,9 +1,9 @@
-package com.example.goalsgetter.features.goal.di
+package com.example.goalsgetter.features.routine.di
 
-import com.example.goalsgetter.features.goal.data.RoutineRepository
-import com.example.goalsgetter.features.goal.domain.DeleteGoalUseCase
-import com.example.goalsgetter.features.goal.domain.SaveRoutineUseCase
-import com.example.goalsgetter.features.goal.domain.GetRoutinesUseCase
+import com.example.goalsgetter.features.routine.data.RoutineRepository
+import com.example.goalsgetter.features.routine.domain.DeleteRoutineUseCase
+import com.example.goalsgetter.features.routine.domain.SaveRoutineUseCase
+import com.example.goalsgetter.features.routine.domain.GetRoutinesUseCase
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -34,8 +34,8 @@ object RoutineModule {
 
     @Provides
     @Singleton
-    fun provideDeleteActiveRoutineUseCase(repository: RoutineRepository): DeleteGoalUseCase {
-        return DeleteGoalUseCase(repository)
+    fun provideDeleteActiveRoutineUseCase(repository: RoutineRepository): DeleteRoutineUseCase {
+        return DeleteRoutineUseCase(repository)
     }
 
 }

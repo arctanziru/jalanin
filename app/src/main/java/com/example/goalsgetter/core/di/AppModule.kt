@@ -24,7 +24,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseAuthService(): FirebaseAuthService {
-        return FirebaseAuthService(FirebaseAuth.getInstance())
+        return FirebaseAuthService(provideFirebaseAuth())
     }
 
     @Provides

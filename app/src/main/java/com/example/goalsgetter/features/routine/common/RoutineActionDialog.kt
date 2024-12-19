@@ -1,4 +1,4 @@
-package com.example.goalsgetter.features.goal.common
+package com.example.goalsgetter.features.routine.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.goalsgetter.features.goal.data.Routine
+import com.example.goalsgetter.features.routine.data.Routine
 import com.example.goalsgetter.ui.components.CustomButton
 
 @Composable

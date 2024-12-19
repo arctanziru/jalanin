@@ -1,12 +1,12 @@
-package com.example.goalsgetter.features.goal.presentation
+package com.example.goalsgetter.features.routine.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalsgetter.core.utils.Result
-import com.example.goalsgetter.features.goal.data.Activity
-import com.example.goalsgetter.features.goal.data.Routine
-import com.example.goalsgetter.features.goal.domain.GetRoutineByIdUseCase
-import com.example.goalsgetter.features.goal.domain.SaveRoutineUseCase
+import com.example.goalsgetter.features.routine.data.Activity
+import com.example.goalsgetter.features.routine.data.Routine
+import com.example.goalsgetter.features.routine.domain.GetRoutineByIdUseCase
+import com.example.goalsgetter.features.routine.domain.SaveRoutineUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

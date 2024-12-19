@@ -3,8 +3,8 @@ package com.example.goalsgetter.features.dashboard.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalsgetter.features.dashboard.domain.GetMotivationQuoteUseCase
-import com.example.goalsgetter.features.goal.data.Routine
-import com.example.goalsgetter.features.goal.domain.GetRoutinesUseCase
+import com.example.goalsgetter.features.routine.data.Routine
+import com.example.goalsgetter.features.routine.domain.GetRoutinesUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

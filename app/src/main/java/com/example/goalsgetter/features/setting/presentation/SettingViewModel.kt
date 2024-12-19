@@ -2,10 +2,10 @@ package com.example.goalsgetter.features.setting.presentation
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalsgetter.core.utils.LocaleManager
-import com.example.goalsgetter.features.auth.domain.LogoutUseCase
 import com.example.goalsgetter.ui.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val localeManager: LocaleManager,
-    private val logoutUseCase: LogoutUseCase,
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
@@ -36,7 +35,7 @@ class SettingsViewModel @Inject constructor(
 
     fun logout(onLogoutSuccess: () -> Unit) {
         viewModelScope.launch {
-            logoutUseCase.execute()
+            firebaseAuth.signOut()
             onLogoutSuccess()
         }
     }

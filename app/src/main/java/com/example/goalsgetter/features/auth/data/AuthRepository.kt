@@ -24,9 +24,5 @@ class AuthRepository @Inject constructor(
         }
         return user
     }
-
-    fun logout() {
-        firebaseAuthService.logout()
-    }
 }
                                                                                             

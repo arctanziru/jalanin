@@ -1,4 +1,4 @@
-package com.example.goalsgetter.features.goal.presentation
+package com.example.goalsgetter.features.routine.presentation
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -39,9 +39,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.goalsgetter.R
 import com.example.goalsgetter.core.navigation.Screen
-import com.example.goalsgetter.features.goal.common.RoutineActionDialog
-import com.example.goalsgetter.features.goal.data.Activity
-import com.example.goalsgetter.features.goal.data.Routine
+import com.example.goalsgetter.features.routine.common.RoutineActionDialog
+import com.example.goalsgetter.features.routine.data.Activity
+import com.example.goalsgetter.features.routine.data.Routine
 import com.example.goalsgetter.ui.components.AppBar
 import com.example.goalsgetter.ui.components.AppBarVariant
 import com.example.goalsgetter.ui.components.BottomBar

@@ -161,7 +161,7 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                                 .clickable {
                                     viewModel.logout {
                                         navController.navigate("login") {
-                                            popUpTo("splash") { inclusive = true }
+                                            popUpTo(navController.graph.id) { inclusive = true }
                                         }
                                     }
                                 }

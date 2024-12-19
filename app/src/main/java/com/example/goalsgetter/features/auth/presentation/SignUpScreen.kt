@@ -53,7 +53,7 @@ fun SignUpScreen(
         if (signUpState.isSignUpSuccessful) {
             Toast.makeText(context, "Sign Up Successful!", Toast.LENGTH_SHORT).show()
             navController.navigate("dashboard") {
-                popUpTo("signup") { inclusive = true }
+                popUpTo(navController.graph.id) { inclusive = true }
             }
         }
     }
@@ -94,13 +94,6 @@ fun SignUpScreen(
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
             fontSize = 24.sp
-        )
-
-        Spacer(modifier = Modifier.height(18.dp))
-        Text(
-            text = stringResource(R.string.signup),
-            style = MaterialTheme.typography.headlineMedium,
-            fontSize = 18.sp
         )
 
         Spacer(modifier = Modifier.height(30.dp))

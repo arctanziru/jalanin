@@ -24,8 +24,4 @@ class FirebaseAuthService @Inject constructor(private val auth: FirebaseAuth) {
             null
         }
     }
-
-    fun logout() {
-        auth.signOut()
-    }
 }

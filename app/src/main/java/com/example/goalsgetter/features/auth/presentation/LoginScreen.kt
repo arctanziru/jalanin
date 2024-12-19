@@ -35,7 +35,7 @@ fun LoginScreen(
         if (loginState.isLoginSuccessful) {
             Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show()
             navController.navigate("dashboard") {
-                popUpTo("login") { inclusive = true }
+                popUpTo(navController.graph.id) { inclusive = true }
             }
         }
     }
@@ -73,8 +73,7 @@ fun LoginScreen(
         Text(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
-            , fontSize = 24.sp
+            textAlign = TextAlign.Center, fontSize = 24.sp
         )
 
         Spacer(modifier = Modifier.height(30.dp))

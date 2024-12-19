@@ -30,12 +30,13 @@ fun SplashScreen(navController: NavController, viewModel: SplashViewModel = hilt
         when (navigationState) {
             SplashNavigation.ToDashboard -> {
                 navController.navigate("dashboard") {
-                    popUpTo("splash") { inclusive = true }
+                    popUpTo(navController.graph.id) { inclusive = true }
+
                 }
             }
             SplashNavigation.ToLogin -> {
                 navController.navigate("login") {
-                    popUpTo("splash") { inclusive = true }
+                    popUpTo(navController.graph.id) { inclusive = true }
                 }
             }
             null -> {}
