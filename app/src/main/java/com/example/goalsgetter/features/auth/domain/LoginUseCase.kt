@@ -9,7 +9,7 @@ import com.example.goalsgetter.core.utils.asResult
 import javax.inject.Inject
 
 class LoginUseCase @Inject constructor(private val authRepository: AuthRepository) {
-    suspend fun execute(email: String, password: String): Flow<Result<FirebaseUser?>> {
+    suspend fun execute(email: String, password: String): Flow<Result<FirebaseUser>> {
         return flow {
             val result = authRepository.login(email, password)
             emit(result)
