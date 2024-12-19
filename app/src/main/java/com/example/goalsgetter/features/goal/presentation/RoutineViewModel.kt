@@ -1,12 +1,12 @@
-package com.example.goalsgetter.features.routine.presentation
+package com.example.goalsgetter.features.goal.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalsgetter.core.utils.Result
-import com.example.goalsgetter.features.routine.data.Routine
-import com.example.goalsgetter.features.routine.domain.DeleteRoutineUseCase
-import com.example.goalsgetter.features.routine.domain.GetRoutinesUseCase
-import com.example.goalsgetter.features.routine.domain.SaveRoutineUseCase
+import com.example.goalsgetter.features.goal.data.Routine
+import com.example.goalsgetter.features.goal.domain.DeleteGoalUseCase
+import com.example.goalsgetter.features.goal.domain.GetRoutinesUseCase
+import com.example.goalsgetter.features.goal.domain.SaveRoutineUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class RoutineViewModel @Inject constructor(
     private val getRoutinesUseCase: GetRoutinesUseCase,
     private val saveRoutineUseCase: SaveRoutineUseCase,
-    private val deleteRoutineUseCase: DeleteRoutineUseCase,
+    private val deleteGoalUseCase: DeleteGoalUseCase,
     private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
     private val _routinesState = MutableStateFlow(RoutinesState())
@@ -116,7 +116,7 @@ class RoutineViewModel @Inject constructor(
 
     fun deleteRoutine(routineId: String) {
         viewModelScope.launch {
-            deleteRoutineUseCase.execute(routineId).collect { result ->
+            deleteGoalUseCase.execute(routineId).collect { result ->
                 when (result) {
                     is Result.Error -> _routinesState.value = _routinesState.value.copy(
                         isLoading = false,

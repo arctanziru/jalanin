@@ -17,8 +17,9 @@ class LocaleManager @Inject constructor(
         val locale = Locale(langCode)
         Locale.setDefault(locale)
         config.setLocale(locale)
-        context.resources.updateConfiguration(config, context.resources.displayMetrics)
-
+        val newContext = context.createConfigurationContext(config)
+        val resources = newContext.resources
+        context.resources.updateConfiguration(config, resources.displayMetrics)
         // Save preference
         sharedPreferences.edit().putString(LANGUAGE_KEY, langCode).apply()
     }

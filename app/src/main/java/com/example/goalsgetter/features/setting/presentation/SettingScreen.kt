@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +42,6 @@ import com.example.goalsgetter.R
 import com.example.goalsgetter.ui.components.AppBar
 import com.example.goalsgetter.ui.components.AppBarVariant
 import com.example.goalsgetter.ui.components.BottomBar
-import com.example.goalsgetter.ui.components.CustomCard
 
 @Composable
 fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = hiltViewModel()) {
@@ -49,7 +49,9 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
     val showLanguageDialog = remember { mutableStateOf(false) }
 
     val fullName = viewModel.fullName.collectAsState().value
-    val avatarLetter = fullName?.firstOrNull()?.uppercaseChar() ?: 'G' // Default to 'G' for Guest
+    val language = viewModel.language.collectAsState().value
+
+    LaunchedEffect(language) {}
 
     Scaffold(
         bottomBar = { BottomBar(navController) }
@@ -70,33 +72,37 @@ fun SettingsScreen(navController: NavController, viewModel: SettingsViewModel = 
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Row (
+                Row(
                     modifier = Modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center // Centers content horizontally
-                ){
+                ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally // Centers content within the column
 
-                    ){
+                    ) {
 
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .size(120.dp) // Circle size
-                                    .background(Color(0xFF26A69A), shape = CircleShape) // Circle shape with color
-                            ) {
-                                Text(
-                                    text = fullName?.firstOrNull()?.uppercaseChar()?.toString() ?: "G", // Avatar letter
-                                    fontSize = 48.sp, // Letter size
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White // Letter color
-                                )
-                            }
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(120.dp) // Circle size
+                                .background(
+                                    Color(0xFF26A69A),
+                                    shape = CircleShape
+                                ) // Circle shape with color
+                        ) {
+                            Text(
+                                text = fullName?.firstOrNull()?.uppercaseChar()?.toString()
+                                    ?: "G", // Avatar letter
+                                fontSize = 48.sp, // Letter size
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White // Letter color
+                            )
+                        }
 
                         Spacer(Modifier.height(10.dp))
                         Text(
-                            text = fullName ?: "Guest", // Show fallback if null
+                            text = fullName?.trim() ?: "Guest", // Show fallback if null
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Medium
                         )

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,6 +37,7 @@ fun DashboardScreen(
     val fullName by viewModel.fullName.collectAsState()
 
     Scaffold(
+
         bottomBar = {
             BottomBar(navController)
         }
@@ -48,21 +50,26 @@ fun DashboardScreen(
                 navController = navController,
             )
 
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
-            ){
-                GreetingSection("${stringResource(R.string.greeting)}, ${fullName ?: "Guest"}")
+            ) {
+                item {
+                    GreetingSection("${stringResource(R.string.greeting)}, ${fullName?.trim()?.split(" ")?.first() ?: "Guest"}")
+                }
 
-                MotivationQuoteSection(motivationQuoteState)
+                item {
+                    MotivationQuoteSection(motivationQuoteState)
+                }
 
-                ActiveRoutineSection(activeRoutineState)
+                item {
+                    ActiveRoutineSection(activeRoutineState)
+                }
+
             }
-
-
         }
     }
 }
@@ -97,7 +104,7 @@ fun MotivationQuoteSection(motivationQuoteState: MotivationQuote) {
     CustomCard() {
         when {
             motivationQuoteState.quote.isNotEmpty() -> {
-                Column(){
+                Column() {
 
                     Text(
 
@@ -109,10 +116,11 @@ fun MotivationQuoteSection(motivationQuoteState: MotivationQuote) {
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "\"${motivationQuoteState.quote}\"", // Wrap in quotes
+                        text = motivationQuoteState.quote,
                         style = MaterialTheme.typography.bodyLarge,
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium,                )
+                        fontWeight = FontWeight.Medium,
+                    )
 
                 }
             }
@@ -134,54 +142,35 @@ fun MotivationQuoteSection(motivationQuoteState: MotivationQuote) {
 
 @Composable
 fun ActiveRoutineSection(activeRoutineState: ActiveRoutine) {
-
-
     CustomCard() {
         when {
             activeRoutineState.routine != null -> {
                 Text(
-                    text =  stringResource(R.string.activeRoutine),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontSize = 16.sp
-                )
-                Text(
-                    text =  activeRoutineState.routine.title,
+                    text = activeRoutineState.routine.title,
                     style = MaterialTheme.typography.headlineSmall,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Medium
 
                 )
                 Text(
-                    text =  stringResource(R.string.createRoutineDesc),
+                    text = activeRoutineState.routine.description,
                     style = MaterialTheme.typography.headlineSmall,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    fontSize = 16.sp, fontWeight = FontWeight.Light
                 )
-                Text(
-                    text =  activeRoutineState.routine.description,
-                style = MaterialTheme.typography.headlineSmall,
-                fontSize = 16.sp, fontWeight = FontWeight.Light
-                )
-                Text(
-                    text = "${stringResource(R.string.activity) } :",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontSize = 14.sp, fontWeight = FontWeight.Medium
-                )
-                activeRoutineState.routine.activities.forEach { activity ->
-                    Column(){
+                Spacer(modifier = Modifier.height(16.dp))
+                Column {
+                    activeRoutineState.routine.activities.forEach { activity ->
                         Text(
-                            text = "${activity.title} (${if (activity.completed) stringResource(R.string.completeStatus) else "Pending"})",
+                            text = "${activity.title} (${stringResource(if (activity.completed) R.string.completed else R.string.pending)})",
                             style = MaterialTheme.typography.bodyMedium,
                             fontSize = 16.sp, fontWeight = FontWeight.Medium
                         )
                         Text(
                             text = activity.description,
-                            style = MaterialTheme.typography.bodyMedium
-                            , fontSize = 14.sp
+                            style = MaterialTheme.typography.bodyMedium, fontSize = 14.sp
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
-
                 }
             }
 
@@ -198,7 +187,7 @@ fun ActiveRoutineSection(activeRoutineState: ActiveRoutine) {
             }
 
             else -> {
-                Text(text = stringResource(R.string.noRoutines))
+                Text(text = stringResource(R.string.noActiveRoutine))
             }
         }
     }

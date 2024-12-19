@@ -4,18 +4,13 @@ import CustomTextField
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,6 +69,7 @@ fun LoginScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.titleLarge,
@@ -87,10 +83,10 @@ fun LoginScreen(
         CustomTextField(
             value = loginState.email,
             onValueChange = { viewModel.updateEmail(it) },
-            label = "Email",
-            placeholder = stringResource(R.string.authInputEmail),
+            label = stringResource(R.string.emailLabel),
+            placeholder = stringResource(R.string.emailPlaceholder),
             isPassword = false,
-            errorMessage = if (loginState.email.isEmpty()) "Email cannot be empty" else null,
+            errorMessage = if (loginState.email.isEmpty()) stringResource(R.string.emailEmptyError) else null,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp) // Add padding here
@@ -101,10 +97,10 @@ fun LoginScreen(
         CustomTextField(
             value = loginState.password,
             onValueChange = { viewModel.updatePassword(it) },
-            label = stringResource(R.string.authLabelPassword),
-            placeholder =  stringResource(R.string.authInputPassword),
+            label = stringResource(R.string.passwordLabel),
+            placeholder = stringResource(R.string.passwordPlaceholder),
             isPassword = true,
-            errorMessage = if (loginState.password.isEmpty()) "Password cannot be empty" else null,
+            errorMessage = if (loginState.password.isEmpty()) stringResource(R.string.passwordEmptyError) else null,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

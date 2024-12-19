@@ -9,8 +9,8 @@ import androidx.navigation.navArgument
 import com.example.goalsgetter.features.auth.presentation.LoginScreen
 import com.example.goalsgetter.features.auth.presentation.SignUpScreen
 import com.example.goalsgetter.features.dashboard.presentation.DashboardScreen
-import com.example.goalsgetter.features.routine.presentation.RoutineCreateEditScreen
-import com.example.goalsgetter.features.routine.presentation.RoutineScreen
+import com.example.goalsgetter.features.goal.presentation.RoutineCreateEditScreen
+import com.example.goalsgetter.features.goal.presentation.RoutineScreen
 import com.example.goalsgetter.features.setting.presentation.SettingsScreen
 import com.example.goalsgetter.features.splash.presentation.SplashScreen
 

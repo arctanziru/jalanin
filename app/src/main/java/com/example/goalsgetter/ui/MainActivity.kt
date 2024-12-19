@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.example.goalsgetter.core.navigation.AppNavGraph
 import com.example.goalsgetter.ui.theme.GoalsGetterTheme
+import com.example.goalsgetter.ui.theme.Light
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GoalsGetterTheme {
                 val navController = rememberNavController()
-                Surface(color = MaterialTheme.colorScheme.background) {
+                Surface(color = Light) {
                     AppNavGraph(navController = navController)
                 }
             }

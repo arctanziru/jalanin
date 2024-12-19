@@ -1,12 +1,12 @@
-package com.example.goalsgetter.features.routine.presentation
+package com.example.goalsgetter.features.goal.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalsgetter.core.utils.Result
-import com.example.goalsgetter.features.routine.data.Activity
-import com.example.goalsgetter.features.routine.data.Routine
-import com.example.goalsgetter.features.routine.domain.GetRoutineByIdUseCase
-import com.example.goalsgetter.features.routine.domain.SaveRoutineUseCase
+import com.example.goalsgetter.features.goal.data.Activity
+import com.example.goalsgetter.features.goal.data.Routine
+import com.example.goalsgetter.features.goal.domain.GetRoutineByIdUseCase
+import com.example.goalsgetter.features.goal.domain.SaveRoutineUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,13 +46,14 @@ class RoutineCreateEditViewModel @Inject constructor(
                     is Result.Error -> {
                         _state.value = _state.value.copy(
                             isLoading = false,
-                            errorMessage = result.exception.message
+                            errorCode = ErrorCode.GENERIC_ERROR
                         )
                     }
                 }
             }
         }
     }
+
 
 
     fun updateTitle(newTitle: String) {
@@ -74,26 +75,16 @@ class RoutineCreateEditViewModel @Inject constructor(
 
     fun saveRoutine() {
         val currentState = _state.value
-        if (currentState.title.isBlank()) {
-            _state.value = currentState.copy(errorMessage = "Nama Rencana tidak boleh kosong")
-            return
+        when {
+            currentState.title.isBlank() -> _state.value = currentState.copy(errorCode = ErrorCode.BLANK_TITLE)
+            currentState.description.isBlank() -> _state.value = currentState.copy(errorCode = ErrorCode.BLANK_DESCRIPTION)
+            currentState.activities.isEmpty() -> _state.value = currentState.copy(errorCode = ErrorCode.NO_ACTIVITIES)
+            firebaseAuth.currentUser?.email.isNullOrEmpty() -> _state.value = currentState.copy(errorCode = ErrorCode.GENERIC_ERROR)
+            else -> performSave(currentState)
         }
-        if (currentState.description.isBlank()) {
-            _state.value = currentState.copy(errorMessage = "Deskripsi Rencana tidak boleh kosong")
-            return
-        }
-        if (currentState.activities.isEmpty()) {
-            _state.value = currentState.copy(errorMessage = "Tambahkan setidaknya satu aktivitas")
-            return
-        }
+    }
 
-        val userEmail = firebaseAuth.currentUser?.email ?: ""
-
-        if (userEmail.isEmpty()) {
-            _state.value = currentState.copy(errorMessage = "Terjadi error, mohon coba lagi")
-            return
-        }
-
+    private fun performSave(currentState: RoutineFormState) {
         viewModelScope.launch {
             saveRoutineUseCase.execute(
                 Routine(
@@ -102,21 +93,29 @@ class RoutineCreateEditViewModel @Inject constructor(
                     description = currentState.description,
                     active = currentState.active,
                     activities = currentState.activities,
-                    userEmail = userEmail
+                    userEmail = firebaseAuth.currentUser!!.email!!
                 )
             ).collect { result ->
                 when (result) {
-                    is Result.Loading -> _state.value = currentState.copy(isSaving = true, errorMessage = null)
-                    is Result.Success -> _state.value = currentState.copy(isSaving = false, saveSuccess = true)
+                    is Result.Loading -> _state.value = currentState.copy(isSaving = true, errorCode = ErrorCode.NONE)
+                    is Result.Success -> _state.value = currentState.copy(isSaving = false, saveSuccess = true, errorCode = ErrorCode.NONE)
                     is Result.Error -> _state.value = currentState.copy(
                         isSaving = false,
                         saveSuccess = false,
-                        errorMessage = result.exception.message
+                        errorCode = ErrorCode.GENERIC_ERROR
                     )
                 }
             }
         }
     }
+}
+
+enum class ErrorCode {
+    BLANK_TITLE,
+    BLANK_DESCRIPTION,
+    NO_ACTIVITIES,
+    GENERIC_ERROR,
+    NONE
 }
 
 data class RoutineFormState(
@@ -128,5 +127,5 @@ data class RoutineFormState(
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
     val saveSuccess: Boolean? = null,
-    val errorMessage: String? = null
+    val errorCode: ErrorCode = ErrorCode.NONE
 )

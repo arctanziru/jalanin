@@ -1,4 +1,4 @@
-package com.example.goalsgetter.features.routine.data
+package com.example.goalsgetter.features.goal.data
 
 data class Routine(
     val userEmail: String,

@@ -1,4 +1,4 @@
-package com.example.goalsgetter.features.routine.presentation
+package com.example.goalsgetter.features.goal.presentation
 
 import CustomTextField
 import android.widget.Toast
@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,7 +25,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.goalsgetter.features.routine.data.Activity
+import com.example.goalsgetter.features.goal.data.Activity
 import com.example.goalsgetter.ui.components.ButtonType
 import com.example.goalsgetter.ui.components.CustomButton
 import com.example.goalsgetter.ui.theme.Primary
@@ -82,7 +82,13 @@ fun RoutineCreateEditScreen(
         topBar = {
             TopAppBar(
                 modifier = Modifier.background(color = Color.White),
-                title = { Text(if (isEdit) stringResource(R.string.editRoutineBar) else stringResource(R.string.createRoutineBar)) },
+                title = {
+                    Text(
+                        if (isEdit) stringResource(R.string.editRoutineBar) else stringResource(
+                            R.string.createRoutineBar
+                        )
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -122,7 +128,10 @@ fun RoutineCreateEditScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    Text(stringResource(R.string.activity), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(R.string.activity),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
 
                 // Activity List
@@ -133,7 +142,6 @@ fun RoutineCreateEditScreen(
                     )
                 }
 
-                // Add New Activity
                 item {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         CustomTextField(
@@ -159,7 +167,7 @@ fun RoutineCreateEditScreen(
                                 .height(48.dp),
                             shape = RoundedCornerShape(4.dp),
                             onClick = {
-                                if (newActivityTitle.isNotBlank() && newActivityDescription.isNotBlank()) {
+                                if (newActivityTitle.isNotBlank()) {
                                     viewModel.addActivity(
                                         Activity(
                                             title = newActivityTitle,
@@ -177,23 +185,34 @@ fun RoutineCreateEditScreen(
                     }
                 }
 
-                // Error Message
                 item {
-                    state.errorMessage?.let { errorMessage ->
-                        Text(
-                            text = errorMessage,
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodySmall
-                        )
+
+                    if (state.errorCode != ErrorCode.NONE) {
+                        val errorMessage = when (state.errorCode) {
+                            ErrorCode.BLANK_TITLE -> stringResource(R.string.errorBlankTitle)
+                            ErrorCode.BLANK_DESCRIPTION -> stringResource(R.string.errorBlankDescription)
+                            ErrorCode.NO_ACTIVITIES -> stringResource(R.string.errorNoActivities)
+                            ErrorCode.GENERIC_ERROR -> stringResource(R.string.errorGeneric)
+                            else -> ""
+                        }
+                        if (errorMessage.isNotEmpty()) {
+                            Text(
+                                text = errorMessage,
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
                     }
                 }
 
-                // Save Button
+
                 item {
                     CustomButton(
                         color = Primary,
                         onClick = { viewModel.saveRoutine() },
-                        text = if (state.isSaving) stringResource(R.string.savingRoutine) else if (isEdit) stringResource(R.string.updateRoutine) else stringResource(R.string.saveRoutine),
+                        text = if (state.isSaving) stringResource(R.string.savingRoutine) else if (isEdit) stringResource(
+                            R.string.updateRoutine
+                        ) else stringResource(R.string.saveRoutine),
                         textColor = MaterialTheme.colorScheme.onPrimary,
                         enabled = !state.isSaving,
                         buttonType = ButtonType.CONTAINED,
@@ -206,7 +225,6 @@ fun RoutineCreateEditScreen(
             }
         }
     }
-
 }
 
 @Composable
@@ -218,12 +236,15 @@ fun ActivityItem(activity: Activity, onRemove: (Activity) -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
+        Column(
+            modifier = Modifier.weight(1f)  // This will make the column take up all available space
+        ) {
             Text(activity.title, style = MaterialTheme.typography.bodyMedium, fontSize = 18.sp)
             Text(activity.description, style = MaterialTheme.typography.bodySmall, fontSize = 14.sp)
         }
+        Spacer(modifier = Modifier.width(8.dp))
         IconButton(onClick = { onRemove(activity) }) {
-            Icon(Icons.Default.Delete, contentDescription = "Delete Activity")
+            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.deleteActivity))
         }
     }
 }
